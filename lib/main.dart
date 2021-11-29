@@ -25,7 +25,6 @@ class MyApp extends StatelessWidget {
             return const Text("Error :(");
           }
           if (snapshot.hasData) {
-            print("sdlçcvopsdnjmv");
             print(Firebase.apps);
             return const MyHomePage(title: 'Flutter Demo Home Page');
           }
