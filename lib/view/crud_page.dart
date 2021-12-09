@@ -58,7 +58,18 @@ class _CrudPageState extends State<CrudPage> {
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           print("You have a error! ${snapshot.error.toString()}");
-          return const Text("Error :(");
+          return Container(
+            alignment: Alignment.center,
+            height: double.maxFinite,
+            child: const Text(
+              "Mande Uma Mensagem\n 😉",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.blue,
+                fontSize: 20,
+              ),
+            ),
+          );
         }
         if (snapshot.hasData) {
           List<Message> messages = snapshot.data as List<Message>;
@@ -81,15 +92,14 @@ class _CrudPageState extends State<CrudPage> {
     );
   }
 
+  submit() => Navigator.of(context).pop();
+
   deleteMessage(String id) async {
     await MessageController.delete(id);
-    print("dscsdckldsc");
     setState(() {
       messageData = MessageController.read();
     });
   }
-
-  submit() => Navigator.of(context).pop();
 
   updateMessage(String id) => showDialog(
         context: context,
