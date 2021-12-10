@@ -6,6 +6,7 @@ import 'package:flutter_firebase/controller/message_controller.dart';
 import 'package:flutter_firebase/model/message.dart';
 import 'package:flutter_firebase/widgets/chat_text_box.dart';
 import 'package:flutter_firebase/widgets/crud_card.dart';
+import 'package:flutter_firebase/widgets/message_list.dart';
 import 'package:intl/intl.dart';
 
 class CrudPage extends StatefulWidget {
@@ -30,6 +31,7 @@ class _CrudPageState extends State<CrudPage> {
   Future onSendMessage() async {
     controllerText.clear();
     updateTime();
+    if (messageText.isEmpty) return;
     await MessageController.create(messageText, time);
     messageText = "";
     reloadMessages();
@@ -37,46 +39,6 @@ class _CrudPageState extends State<CrudPage> {
 
   onChange(String text) {
     messageText = text;
-  }
-
-  listMessages() {
-    return FutureBuilder(
-      future: messageData,
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          print("You have a error! ${snapshot.error.toString()}");
-          return Container(
-            alignment: Alignment.center,
-            height: double.maxFinite,
-            child: const Text(
-              "Mande Uma Mensagem\n 😉",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.blue,
-                fontSize: 20,
-              ),
-            ),
-          );
-        }
-        if (snapshot.hasData) {
-          List<Message> messages = snapshot.data as List<Message>;
-          return ListView.builder(
-            itemCount: messages.length,
-            itemBuilder: (ctx, i) => Align(
-              alignment: Alignment.centerRight,
-              child: CrudCard(
-                text: messages[i].text,
-                time: messages[i].time,
-                id: messages[i].id,
-                deleteMessage: deleteMessage,
-                updateMessage: updateMessage,
-              ),
-            ),
-          );
-        }
-        return const CircularProgressIndicator();
-      },
-    );
   }
 
   submit() => Navigator.of(context).pop();
@@ -124,7 +86,15 @@ class _CrudPageState extends State<CrudPage> {
         child: Column(
           children: [
             Flexible(
-              child: listMessages(),
+              child: MessageList(
+                updateMessage: (id) {
+                  updateMessage(id);
+                },
+                deleteMessage: (id) {
+                  deleteMessage(id);
+                },
+                messageData: messageData,
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(10.0),
