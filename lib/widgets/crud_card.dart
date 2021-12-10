@@ -33,7 +33,6 @@ class CrudCard extends StatelessWidget {
               Container(
                 constraints: const BoxConstraints(
                   minHeight: 45,
-                  // maxHeight: 200,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,7 +61,6 @@ class CrudCard extends StatelessWidget {
               Column(
                 children: [
                   Container(
-                    // width: 20,
                     height: 25,
                     child: IconButton(
                       iconSize: 20,
@@ -75,7 +73,6 @@ class CrudCard extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    // width: 20,
                     height: 25,
                     child: IconButton(
                         iconSize: 20,

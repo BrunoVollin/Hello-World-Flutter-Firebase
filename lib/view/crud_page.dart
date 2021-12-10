@@ -15,20 +15,23 @@ class CrudPage extends StatefulWidget {
 }
 
 class _CrudPageState extends State<CrudPage> {
-  var carregado = false;
   String messageText = "";
-  String newMessageText = "";
   String time = DateFormat("HH:mm").format(DateTime.now());
-  final Future<FirebaseApp> _fbApp = Firebase.initializeApp();
   var messageData = MessageController.read();
-  var controller = TextEditingController();
+  var controllerText = TextEditingController();
+
+  updateTime() => time = DateFormat("HH:mm").format(DateTime.now());
+
+  reloadMessages() => setState(() {
+        messageData = MessageController.read();
+      });
 
   chatTextBox() => Row(
         children: [
           Expanded(
             flex: 10,
             child: TextField(
-              controller: controller,
+              controller: controllerText,
               keyboardType: TextInputType.multiline,
               maxLines: null,
               onChanged: (text) {
@@ -39,11 +42,11 @@ class _CrudPageState extends State<CrudPage> {
                 suffixIcon: IconButton(
                   icon: Icon(Icons.send),
                   onPressed: () async {
-                    controller.clear();
+                    controllerText.clear();
+                    updateTime();
                     await MessageController.create(messageText, time);
-                    setState(() {
-                      messageData = MessageController.read();
-                    });
+                    messageText = "";
+                    reloadMessages();
                   },
                 ),
               ),
@@ -87,7 +90,7 @@ class _CrudPageState extends State<CrudPage> {
             ),
           );
         }
-        return CircularProgressIndicator();
+        return const CircularProgressIndicator();
       },
     );
   }
@@ -96,9 +99,7 @@ class _CrudPageState extends State<CrudPage> {
 
   deleteMessage(String id) async {
     await MessageController.delete(id);
-    setState(() {
-      messageData = MessageController.read();
-    });
+    reloadMessages();
   }
 
   updateMessage(String id) => showDialog(
@@ -107,7 +108,7 @@ class _CrudPageState extends State<CrudPage> {
           title: const Text("Editar Mensagem"),
           content: TextField(
             onChanged: (text) {
-              newMessageText = text;
+              messageText = text;
             },
             decoration:
                 const InputDecoration(hintText: "Entre com a nova mensagem"),
@@ -116,10 +117,8 @@ class _CrudPageState extends State<CrudPage> {
             TextButton(
               child: const Text("Enviar"),
               onPressed: () {
-                MessageController.update(newMessageText, id);
-                setState(() {
-                  messageData = MessageController.read();
-                });
+                MessageController.update(messageText, id);
+                reloadMessages();
                 submit();
               },
             ),
