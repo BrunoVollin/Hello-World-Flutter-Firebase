@@ -4,6 +4,7 @@ import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase/controller/message_controller.dart';
 import 'package:flutter_firebase/model/message.dart';
+import 'package:flutter_firebase/widgets/chat_text_box.dart';
 import 'package:flutter_firebase/widgets/crud_card.dart';
 import 'package:intl/intl.dart';
 
@@ -26,34 +27,17 @@ class _CrudPageState extends State<CrudPage> {
         messageData = MessageController.read();
       });
 
-  chatTextBox() => Row(
-        children: [
-          Expanded(
-            flex: 10,
-            child: TextField(
-              controller: controllerText,
-              keyboardType: TextInputType.multiline,
-              maxLines: null,
-              onChanged: (text) {
-                messageText = text;
-              },
-              decoration: InputDecoration(
-                hintText: "Escreva sua mensagem...",
-                suffixIcon: IconButton(
-                  icon: Icon(Icons.send),
-                  onPressed: () async {
-                    controllerText.clear();
-                    updateTime();
-                    await MessageController.create(messageText, time);
-                    messageText = "";
-                    reloadMessages();
-                  },
-                ),
-              ),
-            ),
-          ),
-        ],
-      );
+  Future onSendMessage() async {
+    controllerText.clear();
+    updateTime();
+    await MessageController.create(messageText, time);
+    messageText = "";
+    reloadMessages();
+  }
+
+  onChange(String text) {
+    messageText = text;
+  }
 
   listMessages() {
     return FutureBuilder(
@@ -144,7 +128,13 @@ class _CrudPageState extends State<CrudPage> {
             ),
             Padding(
               padding: const EdgeInsets.all(10.0),
-              child: chatTextBox(),
+              child: ChatTextBox(
+                controllerText: controllerText,
+                onChange: onChange,
+                onPressed: () {
+                  onSendMessage();
+                },
+              ),
             )
           ],
         ),
