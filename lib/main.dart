@@ -1,7 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_firebase/view/crud_page.dart'; 
+import 'package:flutter_firebase/view/todo_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized(); 
@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
           }
           if (snapshot.hasData) {
             print(Firebase.apps);
-            return CrudPage();
+            return ToDoPage();
           }
           return const Center(child: CircularProgressIndicator());
         },
