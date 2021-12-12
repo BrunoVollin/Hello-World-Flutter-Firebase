@@ -20,12 +20,12 @@ class UpdateToDo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text("Editar Mensagem"),
+      title: const Text("Editar data da tarefa"),
       content: TextField(
         controller: TextEditingController()..text = dueDate,
         onChanged: (text) => onChangedDueDate(text),
         decoration:
-            const InputDecoration(hintText: "Entre com a data da taréfa..."),
+            const InputDecoration(hintText: "Entre com a data da tarefa..."),
       ),
       actions: [
         TextButton(

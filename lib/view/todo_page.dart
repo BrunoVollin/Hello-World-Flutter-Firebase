@@ -68,7 +68,7 @@ class _ToDoPageState extends State<ToDoPage> {
                 alignment: Alignment.center,
                 height: double.maxFinite,
                 child: const Text(
-                  "Adicione uma Taréfa\n 😉",
+                  "Adicione uma Tarefa\n 😉",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.blue,

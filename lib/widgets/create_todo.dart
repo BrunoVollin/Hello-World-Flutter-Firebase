@@ -26,12 +26,12 @@ class CreateToDo extends StatelessWidget {
             TextField(
               onChanged: (text) => onChangedText(text),
               decoration: const InputDecoration(
-                  hintText: "Entre com o Texto da taréfa..."),
+                  hintText: "Entre com o texto da tarefa..."),
             ),
             TextField(
               onChanged: (text) => onChangedDueDate(text),
               decoration: const InputDecoration(
-                  hintText: "Entre com a data da taréfa..."),
+                  hintText: "Entre com a data da tarefa..."),
             ),
           ],
         ),
